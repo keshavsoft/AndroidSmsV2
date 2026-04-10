@@ -1,7 +1,9 @@
 package com.example.smsapp.ui.common.conversation.conversationScreen
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import com.example.smsapp.data.SmsMessage
 import com.example.smsapp.data.SmsSenderRepository
 import com.example.smsapp.ui.common.conversation.conversationScreen.ui.ConversationUIV1
@@ -22,8 +24,16 @@ fun ConversationScreen(
     val phone = messages.firstOrNull()?.address ?: return
     val smsRepo = remember { SmsSenderRepository() }
 
+    val onSend1: (String) -> Unit = { message ->
+        smsRepo.sendSms(phone, message)
+    }
+
+    val context = LocalContext.current
+
     val onSend: (String) -> Unit = { message ->
         smsRepo.sendSms(phone, message)
+        Toast.makeText(context, "$message : Sent", Toast.LENGTH_SHORT).show()
+        state.clearInput()
     }
 
     ui.Render(
