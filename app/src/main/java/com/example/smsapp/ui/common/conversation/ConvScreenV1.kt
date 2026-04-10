@@ -24,7 +24,7 @@ import com.example.smsapp.data.SmsSenderRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConvScreen(
+fun ConvScreenV1(
     address: String,
     title: String = "",
     openDrawer: () -> Unit

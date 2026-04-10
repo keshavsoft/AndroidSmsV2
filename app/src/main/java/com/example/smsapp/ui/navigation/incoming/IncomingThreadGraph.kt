@@ -1,11 +1,13 @@
 package com.example.smsapp.ui.navigation.incoming
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.smsapp.ui.common.conversation.ConvScreen
 import com.example.smsapp.ui.common.conversation.ConvThreadAllLeftRight
 import com.example.smsapp.ui.common.conversation.ConversationThreadAll
 import com.example.smsapp.ui.common.conversation.ConversationThreadIncoming
@@ -47,8 +49,9 @@ fun NavGraphBuilder.incomingThreadGraph(
         )
     ) { backStack ->
         val number = backStack.arguments?.getString("number") ?: ""
+        Log.d("NAVCHECK", "number = $number")
         val name = backStack.arguments?.getString("name") ?: ""
-        ConvThreadAllLeftRight(number, name) { navController.popBackStack() }
+        ConvScreen(number, name) { navController.popBackStack() }
     }
 
 }
