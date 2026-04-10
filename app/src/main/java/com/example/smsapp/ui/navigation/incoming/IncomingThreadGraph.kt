@@ -13,6 +13,7 @@ import com.example.smsapp.ui.common.conversation.ConvScreen
 import com.example.smsapp.ui.common.conversation.ConvThreadAllLeftRight
 import com.example.smsapp.ui.common.conversation.ConversationThreadAll
 import com.example.smsapp.ui.common.conversation.ConversationThreadIncoming
+import com.example.smsapp.ui.common.conversation.conversationScreen.ConversationScreen
 import com.example.smsapp.utils.normalizeAddress
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -63,7 +64,7 @@ fun NavGraphBuilder.incomingThreadGraph(
             .filter { normalizeAddress(it.address) == number }
             .sortedBy { it.dateLong }
 
-        ConvScreen(
+        ConversationScreen(
             messages = messagesList,   // real list, NOT number
             title = name,
             onSendClick = { msg ->
