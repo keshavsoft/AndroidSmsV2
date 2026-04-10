@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -28,7 +29,7 @@ import com.example.smsapp.ui.common.conversation.conversationScreen.ConvState
 import com.example.smsapp.ui.components.AppTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
-object ConversationUIV2 {
+object ConversationUIV3 {
     @Composable
     fun Render(
         state: ConvState,
@@ -115,7 +116,6 @@ private fun MessageItem(sms: SmsMessage) {
         }
     }
 }
-
 @Composable
 private fun MessageInput(
     inputText: String,
@@ -123,6 +123,70 @@ private fun MessageInput(
     onSendClick: () -> Unit,
     focusRequester: FocusRequester
 ) {
+    val suggestions = listOf("Ok", "On my way", "Call you", "Yes", "No")
+
+    Column {
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            items(suggestions) { text ->
+                AssistChip(
+                    onClick = { onInputChange(text) },
+                    label = { Text(text) },
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            TextField(
+                value = inputText,
+                onValueChange = onInputChange,
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(focusRequester),
+                placeholder = { Text("Type message") }
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Button(onClick = onSendClick) {
+                Text("Send")
+            }
+        }
+    }
+}
+
+@Composable
+private fun MessageInput1(
+    inputText: String,
+    onInputChange: (String) -> Unit,
+    onSendClick: () -> Unit,
+    focusRequester: FocusRequester
+) {
+    val suggestions = listOf("Ok", "On my way", "Call you", "Yes", "No")
+
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+    ) {
+        items(suggestions) { text ->
+            AssistChip(
+                onClick = { onInputChange(text) },
+                label = { Text(text) },
+                modifier = Modifier.padding(end = 8.dp)
+            )
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()

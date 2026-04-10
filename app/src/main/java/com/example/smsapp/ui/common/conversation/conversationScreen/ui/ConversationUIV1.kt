@@ -1,4 +1,4 @@
-package com.example.smsapp.ui.common.conversation.conversationScreen.ui.v1
+package com.example.smsapp.ui.common.conversation.conversationScreen.ui
 
 import android.provider.Telephony
 import androidx.compose.foundation.layout.Column
@@ -67,7 +67,7 @@ object ConversationUIV1 {
 }
 
 @Composable
-fun ConversationTopBar(
+private fun ConversationTopBar(
     title: String,
     onBackClick: () -> Unit
 ) {

@@ -1,6 +1,8 @@
-package com.example.smsapp.ui.common.conversation.conversationScreen.ui.v2
+package com.example.smsapp.ui.common.conversation.conversationScreen.ui
 
 import android.provider.Telephony
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,15 +13,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.smsapp.data.SmsMessage
-import com.example.smsapp.ui.common.conversation.ChatBubbleIncoming
-import com.example.smsapp.ui.common.conversation.ChatBubbleOutgoing
+
 import com.example.smsapp.ui.common.conversation.conversationScreen.ConvState
 import com.example.smsapp.ui.components.AppTopBar
 
@@ -67,7 +71,7 @@ object ConversationUIV2 {
 }
 
 @Composable
-fun ConversationTopBar(
+private fun ConversationTopBar(
     title: String,
     onBackClick: () -> Unit
 ) {
@@ -98,12 +102,19 @@ private fun MessageList(
 
 @Composable
 private fun MessageItem(sms: SmsMessage) {
-    if (sms.type == Telephony.Sms.MESSAGE_TYPE_INBOX)
-        ChatBubbleIncoming(sms.body)
-    else
-        ChatBubbleOutgoing(sms.body)
-}
+    val isIncoming = sms.type == Telephony.Sms.MESSAGE_TYPE_INBOX
 
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = if (isIncoming) Arrangement.Start else Arrangement.End
+    ) {
+        if (isIncoming) {
+            ChatBubbleIncoming(sms.body)
+        } else {
+            ChatBubbleOutgoing(sms.body)
+        }
+    }
+}
 
 @Composable
 private fun MessageInput(
@@ -131,5 +142,49 @@ private fun MessageInput(
         Button(onClick = onSendClick) {
             Text("Send")
         }
+    }
+}
+
+@Composable
+private fun ChatBubbleIncoming(message: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Text(
+            text = message,
+            modifier = Modifier
+                .background(Color.LightGray, shape = RoundedCornerShape(
+                    topStart = 25.dp,
+                    topEnd = 25.dp,
+                    bottomEnd = 25.dp,
+                    bottomStart = 0.dp   // sharp
+                ))
+                .padding(horizontal = 14.dp, vertical = 10.dp)
+        )
+    }
+}
+
+@Composable
+private fun ChatBubbleOutgoing(message: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Text(
+            text = message,
+            modifier = Modifier
+                .background(Color.LightGray, shape = RoundedCornerShape(
+                    topStart = 25.dp,
+                    topEnd = 25.dp,
+                    bottomEnd = 0.dp,
+                    bottomStart = 25.dp   // sharp
+                ))
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+        )
     }
 }

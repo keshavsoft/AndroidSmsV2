@@ -67,9 +67,6 @@ fun NavGraphBuilder.incomingThreadGraph(
         ConversationScreen(
             messages = messagesList,   // real list, NOT number
             title = name,
-            onSendClick = { msg ->
-                // call send logic here
-            },
             openDrawer = { navController.popBackStack() }
         )
     }
