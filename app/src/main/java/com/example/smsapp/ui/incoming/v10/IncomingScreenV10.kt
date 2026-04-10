@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.smsapp.data.SmsMessage
 import com.example.smsapp.ui.components.AppTopBar
 import com.example.smsapp.ui.incoming.common.IncomingPermission
-import com.example.smsapp.ui.incoming.logic.loadIncomingSms
 import com.example.smsapp.ui.incoming.conversation.IncomingConversationList
 import com.example.smsapp.contacts.data.loadContacts
 import com.example.smsapp.data.SmsReaderRepository
@@ -23,27 +22,31 @@ import com.example.smsapp.ui.incoming.logic.groupBySender
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncomingScreenV9(
+fun IncomingScreenV10(
     openDrawer: () -> Unit,
     navigateToThread: (String, String) -> Unit,
-    inHeadLabel: String = "Incoming V9"
+    inHeadLabel: String = "All Align V10 "
 ) {
     val context = LocalContext.current
     var messages by remember { mutableStateOf<List<SmsMessage>>(emptyList()) }
     var contactsMap by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+    var titleText by remember { mutableStateOf(inHeadLabel) }
 
-    val conversations = remember(messages, contactsMap) { groupBySender(messages, contactsMap) }
-
+    val conversations = remember(messages, contactsMap) {
+        groupBySender(messages, contactsMap)
+            .sortedByDescending { it.lastTimestamp }
+    }
     IncomingPermission(context) {
         val repo = SmsReaderRepository(context)
         messages = repo.getAllMessages()
+        titleText = "${inHeadLabel} (${messages.size})"
 
         contactsMap = loadContacts(context)
     }
 
     Scaffold(
         topBar = {
-            AppTopBar(title = inHeadLabel, showBack = false, onMenuClick = openDrawer)
+            AppTopBar(title = titleText, showBack = false, onMenuClick = openDrawer)
         }
     )
     { padding ->

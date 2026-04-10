@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.smsapp.AppScreen
 import com.example.smsapp.ui.incoming.v8.IncomingScreenV8
 import android.net.Uri
+import com.example.smsapp.ui.incoming.v10.IncomingScreenV10
 import com.example.smsapp.ui.incoming.v9.IncomingScreenV9
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,6 +34,17 @@ fun NavGraphBuilder.incomingListGraph(
                 val n = Uri.encode(number)
                 val t = Uri.encode(name)
                 navController.navigate("incoming_v9_thread?number=$n&name=$t")
+            }
+        )
+    }
+
+    composable(AppScreen.InboxIncomingV10.route) {
+        IncomingScreenV10(
+            openDrawer = openDrawer,
+            navigateToThread = { number, name ->
+                val n = Uri.encode(number)
+                val t = Uri.encode(name)
+                navController.navigate("incoming_v10_thread?number=$n&name=$t")
             }
         )
     }

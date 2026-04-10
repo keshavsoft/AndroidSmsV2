@@ -1,4 +1,4 @@
-package com.example.smsapp.ui.incoming.common.conversation
+package com.example.smsapp.ui.common.conversation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.smsapp.data.SmsMessage
 import com.example.smsapp.data.SmsReaderRepository
 import com.example.smsapp.ui.components.AppTopBar
-import com.example.smsapp.ui.incoming.ui.ChatBubbleIncoming
 import com.example.smsapp.utils.normalizeAddress
 
 @OptIn(ExperimentalMaterial3Api::class)

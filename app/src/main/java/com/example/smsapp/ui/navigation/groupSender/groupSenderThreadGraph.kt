@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.smsapp.ui.incoming.common.conversation.ConversationThreadIncoming
+import com.example.smsapp.ui.common.conversation.ConversationThreadIncoming
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.groupSenderThreadGraph(

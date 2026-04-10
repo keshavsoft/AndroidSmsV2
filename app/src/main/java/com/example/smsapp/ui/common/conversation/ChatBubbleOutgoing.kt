@@ -2,6 +2,7 @@ package com.example.smsapp.ui.common.conversation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,12 +11,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ChatBubbleIncoming(message: String) {
+fun ChatBubbleOutgoing(message: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.End
     ) {
         Text(
             text = message,

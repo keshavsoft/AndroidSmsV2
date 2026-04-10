@@ -24,12 +24,14 @@ class SmsReaderRepository(private val context: Context) {
             val addressIndex = it.getColumnIndex(Telephony.Sms.ADDRESS)
             val bodyIndex = it.getColumnIndex(Telephony.Sms.BODY)
             val dateIndex = it.getColumnIndex(Telephony.Sms.DATE)
+            val typeIndex = it.getColumnIndex(Telephony.Sms.TYPE)
 
             while (it.moveToNext()) {
 
                 val address = it.getString(addressIndex)
                 val body = it.getString(bodyIndex)
                 val dateMillis = it.getLong(dateIndex)
+                val type = it.getInt(typeIndex)
 
                 val formattedDate = SimpleDateFormat(
                     "dd MMM yyyy, hh:mm a",
@@ -41,7 +43,7 @@ class SmsReaderRepository(private val context: Context) {
                         address = address,
                         body = body,
                         date = formattedDate,
-                        type = 1
+                        type
                     )
                 )
             }
@@ -68,11 +70,13 @@ class SmsReaderRepository(private val context: Context) {
             val addressIndex = it.getColumnIndex(Telephony.Sms.ADDRESS)
             val bodyIndex = it.getColumnIndex(Telephony.Sms.BODY)
             val dateIndex = it.getColumnIndex(Telephony.Sms.DATE)
+            val typeIndex = it.getColumnIndex(Telephony.Sms.TYPE)
 
             while (it.moveToNext()) {
                 val address = it.getString(addressIndex)
                 val body = it.getString(bodyIndex)
                 val dateMillis = it.getLong(dateIndex)
+                val type = it.getInt(typeIndex)
 
                 val formattedDate = SimpleDateFormat(
                     "dd MMM yyyy, hh:mm a",
@@ -80,7 +84,7 @@ class SmsReaderRepository(private val context: Context) {
                 ).format(Date(dateMillis))
 
                 smsList.add(
-                    SmsMessage(address, body, formattedDate)
+                    SmsMessage(address, body, formattedDate,type)
                 )
             }
         }
@@ -110,6 +114,7 @@ class SmsReaderRepository(private val context: Context) {
                 val address = it.getString(addressIndex)
                 val body = it.getString(bodyIndex)
                 val dateMillis = it.getLong(dateIndex)
+                val type = it.getInt(typeIndex)
 
                 val formattedDate = SimpleDateFormat(
                     "dd MMM yyyy, hh:mm a",
@@ -117,7 +122,7 @@ class SmsReaderRepository(private val context: Context) {
                 ).format(Date(dateMillis))
 
                 smsList.add(
-                    SmsMessage(address, body, formattedDate, typeIndex)
+                    SmsMessage(address, body, formattedDate, type)
                 )
             }
         }
@@ -125,7 +130,39 @@ class SmsReaderRepository(private val context: Context) {
         return smsList
     }
 
-    fun getAllMessages(): List<SmsMessage> {
+    fun getAllMessages1(): List<SmsMessage> {
         return getIncomingMessages() + getOutgoingMessages()
+    }
+
+    fun getAllMessages(): List<SmsMessage> {
+        val smsList = mutableListOf<SmsMessage>()
+
+        val cursor = context.contentResolver.query(
+            Telephony.Sms.CONTENT_URI,
+            null, null, null,
+            Telephony.Sms.DEFAULT_SORT_ORDER
+        )
+
+        cursor?.use {
+            val addressIndex = it.getColumnIndexOrThrow(Telephony.Sms.ADDRESS)
+            val bodyIndex = it.getColumnIndexOrThrow(Telephony.Sms.BODY)
+            val dateIndex = it.getColumnIndexOrThrow(Telephony.Sms.DATE)
+            val typeIndex = it.getColumnIndexOrThrow(Telephony.Sms.TYPE)
+
+            while (it.moveToNext()) {
+                val address = it.getString(addressIndex)
+                val body = it.getString(bodyIndex)
+                val dateMillis = it.getLong(dateIndex)
+                val type = it.getInt(typeIndex)
+
+                val formattedDate = SimpleDateFormat(
+                    "dd MMM yyyy, hh:mm a",
+                    Locale.getDefault()
+                ).format(Date(dateMillis))
+
+                smsList.add(SmsMessage(address, body, formattedDate, type))
+            }
+        }
+        return smsList
     }
 }

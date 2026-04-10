@@ -11,13 +11,12 @@ fun groupBySender(
     val grouped = messages.groupBy { normalizeAddress(it.address) }
 
     return grouped.map { (address, msgs) ->
-
-        val latest = msgs.maxByOrNull { it.date.toLongOrNull() ?: 0L }!!
+        val latest = msgs.maxByOrNull { it.dateLong }!!
 
         IncomingConversationV1(
             address = contactsMap[address] ?: address,
             lastMessage = latest.body,
-            lastTimestamp = latest.date.toLongOrNull() ?: 0L,
+            lastTimestamp = latest.dateLong,
             count = msgs.size,
             messages = msgs.sortedByDescending { it.date.toLongOrNull() ?: 0L },
             phoneNumber = address
