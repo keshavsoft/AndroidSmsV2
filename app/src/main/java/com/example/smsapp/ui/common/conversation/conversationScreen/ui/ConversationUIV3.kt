@@ -165,51 +165,6 @@ private fun MessageInput(
 }
 
 @Composable
-private fun MessageInput1(
-    inputText: String,
-    onInputChange: (String) -> Unit,
-    onSendClick: () -> Unit,
-    focusRequester: FocusRequester
-) {
-    val suggestions = listOf("Ok", "On my way", "Call you", "Yes", "No")
-
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        items(suggestions) { text ->
-            AssistChip(
-                onClick = { onInputChange(text) },
-                label = { Text(text) },
-                modifier = Modifier.padding(end = 8.dp)
-            )
-        }
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        TextField(
-            value = inputText,
-            onValueChange = onInputChange,
-            modifier = Modifier
-                .weight(1f)
-                .focusRequester(focusRequester),
-            placeholder = { Text("Type message") }
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Button(onClick = onSendClick) {
-            Text("Send")
-        }
-    }
-}
-
-@Composable
 private fun ChatBubbleIncoming(message: String) {
     Row(
         modifier = Modifier
