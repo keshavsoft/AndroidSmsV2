@@ -3,14 +3,17 @@ package com.example.smsapp.ui.navigation.incoming
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.smsapp.data.SmsReaderRepository
 import com.example.smsapp.ui.common.conversation.ConvScreen
 import com.example.smsapp.ui.common.conversation.ConvThreadAllLeftRight
 import com.example.smsapp.ui.common.conversation.ConversationThreadAll
 import com.example.smsapp.ui.common.conversation.ConversationThreadIncoming
+import com.example.smsapp.utils.normalizeAddress
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.incomingThreadGraph(
@@ -51,7 +54,23 @@ fun NavGraphBuilder.incomingThreadGraph(
         val number = backStack.arguments?.getString("number") ?: ""
         Log.d("NAVCHECK", "number = $number")
         val name = backStack.arguments?.getString("name") ?: ""
-        ConvScreen(number, name) { navController.popBackStack() }
+
+        val context = LocalContext.current
+
+        val repo = SmsReaderRepository(context)
+
+        val messagesList = repo.getAllMessages()
+            .filter { normalizeAddress(it.address) == number }
+            .sortedBy { it.dateLong }
+
+        ConvScreen(
+            messages = messagesList,   // real list, NOT number
+            title = name,
+            onSendClick = { msg ->
+                // call send logic here
+            },
+            openDrawer = { navController.popBackStack() }
+        )
     }
 
 }

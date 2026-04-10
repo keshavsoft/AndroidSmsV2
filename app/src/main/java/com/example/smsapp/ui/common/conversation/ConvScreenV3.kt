@@ -28,7 +28,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConvScreen(
+fun ConvScreenV3(
     address: String,
     title: String = "",
     openDrawer: () -> Unit
