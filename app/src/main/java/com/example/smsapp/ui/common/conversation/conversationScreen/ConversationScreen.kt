@@ -24,10 +24,6 @@ fun ConversationScreen(
     val phone = messages.firstOrNull()?.address ?: return
     val smsRepo = remember { SmsSenderRepository() }
 
-    val onSend1: (String) -> Unit = { message ->
-        smsRepo.sendSms(phone, message)
-    }
-
     val context = LocalContext.current
 
     val onSend: (String) -> Unit = { message ->
